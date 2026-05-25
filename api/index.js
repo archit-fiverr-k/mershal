@@ -3,7 +3,16 @@ import server from '../dist/server/server.js';
 export default async function handler(req, res) {
   const protocol = req.headers['x-forwarded-proto'] || 'http';
   const host = req.headers.host;
-  const url = `${protocol}://${host}${req.url}`;
+  
+  // Reconstruct the original path since Vercel's rewrite modifies req.url to /api/index.js
+  let path = req.headers['x-matched-path'] || req.url;
+  const queryIndex = req.url.indexOf('?');
+  if (req.headers['x-matched-path'] && queryIndex !== -1) {
+    path = req.headers['x-matched-path'] + req.url.slice(queryIndex);
+  }
+  
+  const url = `${protocol}://${host}${path}`;
+  console.log(`[Vercel SSR] Incoming URL: ${req.url} -> Resolved URL: ${url} (Matched Path: ${req.headers['x-matched-path'] || 'none'})`);
   
   let body = null;
   if (req.method !== 'GET' && req.method !== 'HEAD') {
