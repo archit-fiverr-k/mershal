@@ -1,0 +1,26 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+    // ─── Logos / Avatars ─────────────────────────────────────────────────────
+    match /logos/{fileName} {
+      // Anyone can read logos so they render properly in the app/portal
+      allow read: if true;
+      
+      // Users can only upload if:
+      // 1. They are signed in.
+      // 2. The filename starts with their exact UID (preventing overwrites of other logos).
+      // 3. The file is less than 5MB.
+      // 4. The file is actually an image.
+      allow write: if request.auth != null 
+                   && fileName.matches(request.auth.uid + '-.*')
+                   && request.resource.size < 5 * 1024 * 1024
+                   && request.resource.contentType.matches('image/.*');
+    }
+
+    // ─── Catch-all Deny ──────────────────────────────────────────────────────
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}
