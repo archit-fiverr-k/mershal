@@ -61,7 +61,7 @@ function DashboardMockup() {
 
         <div className="grid grid-cols-12" style={{ background: "linear-gradient(135deg, #111318, #1C1E27)" }}>
           {/* Sidebar */}
-          <div className="col-span-3 p-3 space-y-1 min-h-[360px]" style={{ borderRight: "1px solid #2A2D3A", background: "#111318" }}>
+          <div className="hidden md:block md:col-span-3 p-3 space-y-1 min-h-[360px]" style={{ borderRight: "1px solid #2A2D3A", background: "#111318" }}>
             <div className="flex items-center gap-2 px-3 py-2 mb-3">
               <div className="h-5 w-5 rounded bg-[#5E6AD2] flex items-center justify-center">
                 <span className="text-[8px] text-white font-bold">S</span>
@@ -89,8 +89,8 @@ function DashboardMockup() {
           </div>
 
           {/* Content */}
-          <div className="col-span-9 p-5 space-y-4 bg-[#0D0E12]">
-            <div className="grid grid-cols-4 gap-2">
+          <div className="col-span-12 md:col-span-9 p-5 space-y-4 bg-[#0D0E12]">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
               {[
                 { label: "Active Projects", value: "12", change: "+3", positive: true },
                 { label: "Revenue (May)", value: "$28.4k", change: "+18%", positive: true },
